@@ -221,6 +221,15 @@ void env_init(struct passwd* pwd)
 	{
 		setenv("TERM", "linux", 1);
 	}
+	//https://gist.github.com/negativeExponent/a7c3181a2c736fecf76410989f412adc
+	if (lang != NULL)
+	{
+		setenv("LANG", lang, 1);
+	}
+	else
+	{
+		setenv("LANG", "en_US.UTF-8", 1);
+	}
 
 	setenv("HOME", pwd->pw_dir, 1);
 	setenv("PWD", pwd->pw_dir, 1);
@@ -244,7 +253,7 @@ void env_init(struct passwd* pwd)
 void env_xdg(const char* tty_id, const enum display_server display_server)
 {
 	char user[15];
-	snprintf(user, 15, "/run/user/%d", getuid());
+	snprintf(user, 15, "/tmp/runtime-%d", getuid());
 	setenv("XDG_RUNTIME_DIR", user, 0);
 	setenv("XDG_SESSION_CLASS", "user", 0);
 	setenv("XDG_SEAT", "seat0", 0);
